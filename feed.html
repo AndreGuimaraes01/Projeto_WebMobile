@@ -15,21 +15,27 @@
         </header>
 
         <section class="view">
-            <div class="feed-header">
+            <!-- Trocamos a div por um header interno da seção -->
+            <header class="feed-header">
                 <p style="margin: 0;">Problemas num raio de 2km de você</p>
-            </div>
+            </header>
             
-            <!-- O JavaScript (storage.js) vai injetar os cards HTML aqui dentro -->
-            <div id="alert-list">
-                <!-- Exemplo estático de como o JS vai gerar o card: -->
-                <div class="alert-card">
-                    <div class="alert-icon">💧</div>
-                    <div class="alert-info">
+            <!-- Trocamos a div por uma <ul> (Unordered List) -->
+            <ul id="alert-list">
+                
+                <!-- Trocamos o card por uma <li> (List Item) -->
+                <li class="alert-card">
+                    <!-- Trocamos a div do ícone por um <span> -->
+                    <span class="alert-icon">💧</span>
+                    
+                    <!-- Trocamos a div de info por um <article> -->
+                    <article class="alert-info">
                         <h4>Via Alagada</h4>
                         <p>A 350m de você</p>
-                    </div>
-                </div>
-            </div>
+                    </article>
+                </li>
+                
+            </ul>
         </section>
 
         <nav id="bottom-nav">
@@ -39,7 +45,6 @@
 
     </main>
 
-    <!-- Aqui entrará o JS que lê os dados e imprime na tela -->
     <script src="./js/storage.js"></script>
 </body>
 </html>
