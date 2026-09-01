@@ -15,18 +15,19 @@
         </header>
 
         <section class="view">
-            <div class="status-card">
+            <!-- Trocamos a div por um <aside> (conteúdo de aviso/lateral) -->
+            <aside class="status-card">
                 <p style="margin: 0; color: #d35400; font-size: 14px; font-weight: bold;">📍 Buscando sua localização...</p>
                 <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 12px;">Aguardando GPS</p>
-            </div>
+            </aside>
             
-            <div class="action-buttons">
+            <!-- Trocamos a div por um <menu> (lista de ações/comandos) -->
+            <menu class="action-buttons">
                 <button id="btn-water" class="btn btn-primary">💧 Reportar Alagamento</button>
                 <button id="btn-trash" class="btn btn-secondary">🗑️ Acúmulo de Lixo</button>
-            </div>
+            </menu>
         </section>
 
-        <!-- Navegação Inferior usando Links HTML reais -->
         <nav id="bottom-nav">
             <a href="index.html" class="nav-item active">📍 Reportar</a>
             <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
@@ -34,7 +35,6 @@
 
     </main>
 
-    <!-- Aqui entrará o JS que pega o GPS e salva os dados -->
     <script src="./js/geo.js"></script>
 </body>
 </html>
