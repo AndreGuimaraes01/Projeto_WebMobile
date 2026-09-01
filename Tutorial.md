@@ -34,11 +34,13 @@ Abaixo, apresentamos as principais interações do usuário focadas no uso de lo
 ### Tela 1: Reporte por Localização (Insert)
 *(Nesta tela, o JavaScript acessa a Geolocation API ao carregar a página para identificar a rua atual do usuário. O usuário então seleciona o tipo de problema para um registro rápido e preciso.)*
 
-<img width="352" height="562" alt="tela1" src="https://github.com/user-attachments/assets/9a2ae6a8-ca60-4af4-94a7-4818154ae9a6" />
+<img width="401" height="637" alt="tela1" src="https://github.com/user-attachments/assets/1f514c82-30ad-4e9f-9a2b-6a6e56fb8d97" />
+
 
 
 ### Tela 2: Feed Dinâmico do Bairro (Listagem)
 *(A lista gerada pelo JavaScript Puro a partir do LocalStorage. O script calcula a distância de cada ocorrência e renderiza dinamicamente os "cards", filtrando apenas os alertas que estão próximos ao usuário.)*
 
-<img width="337" height="557" alt="tela2" src="https://github.com/user-attachments/assets/bd89b9c1-afbf-4d98-b5cf-7ac4df90bab0" />
+<img width="385" height="634" alt="tela2" src="https://github.com/user-attachments/assets/db66b362-c977-4a26-8567-286b042dcb6b" />
+
 
