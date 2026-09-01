@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Feed da Região</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <main id="app-container">
+        
+        <header>
+            <h1>Alertas na Região</h1>
+        </header>
+
+        <section class="view">
+            <div class="feed-header">
+                <p style="margin: 0;">Problemas num raio de 2km de você</p>
+            </div>
+            
+            <!-- O JavaScript (storage.js) vai injetar os cards HTML aqui dentro -->
+            <div id="alert-list">
+                <!-- Exemplo estático de como o JS vai gerar o card: -->
+                <div class="alert-card">
+                    <div class="alert-icon">💧</div>
+                    <div class="alert-info">
+                        <h4>Via Alagada</h4>
+                        <p>A 350m de você</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">📍 Reportar</a>
+            <a href="feed.html" class="nav-item active">📋 Ver Bairro</a>
+        </nav>
+
+    </main>
+
+    <!-- Aqui entrará o JS que lê os dados e imprime na tela -->
+    <script src="./js/storage.js"></script>
+</body>
+</html>

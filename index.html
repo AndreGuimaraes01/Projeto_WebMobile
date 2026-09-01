@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Reportar</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <main id="app-container">
+        
+        <header>
+            <h1>Radar Cidadão</h1>
+        </header>
+
+        <section class="view">
+            <div class="status-card">
+                <p style="margin: 0; color: #d35400; font-size: 14px; font-weight: bold;">📍 Buscando sua localização...</p>
+                <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 12px;">Aguardando GPS</p>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="btn-water" class="btn btn-primary">💧 Reportar Alagamento</button>
+                <button id="btn-trash" class="btn btn-secondary">🗑️ Acúmulo de Lixo</button>
+            </div>
+        </section>
+
+        <!-- Navegação Inferior usando Links HTML reais -->
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item active">📍 Reportar</a>
+            <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
+        </nav>
+
+    </main>
+
+    <!-- Aqui entrará o JS que pega o GPS e salva os dados -->
+    <script src="./js/geo.js"></script>
+</body>
+</html>
