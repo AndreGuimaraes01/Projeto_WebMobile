@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Feed da Região</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <h1>Alertas na Região</h1>
+        </header>
+
+        <section class="view">
+            <header class="feed-header">
+                <p class="feed-subtitle">Problemas num raio de 2km de você</p>
+            </header>
+
+            <form class="filter-bar" onsubmit="return false;">
+                <label for="filtro-tipo">Filtrar por tipo</label>
+                <select id="filtro-tipo" name="filtro-tipo">
+                    <option value="todos">Todos</option>
+                    <option value="agua">💧 Alagamento</option>
+                    <option value="lixo">🗑️ Lixo</option>
+                </select>
+            </form>
+
+            <ul id="alert-list">
+
+                <li class="alert-card">
+                    <span class="alert-icon">💧</span>
+                    <article class="alert-info">
+                        <h4>Via Alagada <span class="badge badge-urgent">🔴 Urgente</span></h4>
+                        <p>A 350m de você</p>
+                        <time datetime="2026-09-01T08:12">Reportado há 12 min</time>
+                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
+                    </article>
+                </li>
+
+                <li class="alert-card">
+                    <span class="alert-icon">🗑️</span>
+                    <article class="alert-info">
+                        <h4>Acúmulo de Lixo</h4>
+                        <p>A 700m de você</p>
+                        <time datetime="2026-09-01T07:40">Reportado há 44 min</time>
+                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
+                    </article>
+                </li>
+
+                <li class="alert-card">
+                    <span class="alert-icon">💧</span>
+                    <article class="alert-info">
+                        <h4>Bueiro Entupido</h4>
+                        <p>A 1.2km de você</p>
+                        <time datetime="2026-09-01T06:55">Reportado há 1h29</time>
+                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
+                    </article>
+                </li>
+
+            </ul>
+
+            <footer class="feed-summary">
+                <p><strong>3</strong> alertas ativos na sua região</p>
+            </footer>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">📍 Reportar</a>
+            <a href="feed.html" class="nav-item active">📋 Ver Bairro</a>
+        </nav>
+    </main>
+    <script src="./js/storage.js"></script>
+</body>
+</html>

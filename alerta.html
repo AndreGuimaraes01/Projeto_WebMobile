@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Detalhe do Alerta</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <a href="feed.html" class="back-link">← Voltar</a>
+            <h1>Detalhe do Alerta</h1>
+        </header>
+
+        <section class="view">
+            <article class="alert-detail">
+                <figure class="alert-photo">
+                    <img src="./img/placeholder-alagamento.jpg" alt="Foto do local do alerta">
+                    <figcaption>Enviada pelo usuário</figcaption>
+                </figure>
+
+                <h2>💧 Via Alagada <span class="badge badge-urgent">🔴 Urgente</span></h2>
+                <p class="alert-distance">A 350m de você</p>
+                <time datetime="2026-09-01T08:12">Reportado há 12 min</time>
+
+                <p class="alert-description">Água acumulada na esquina, altura estimada de 20cm. Trânsito de pedestres comprometido.</p>
+
+                <dl class="alert-status">
+                    <dt>Status</dt>
+                    <dd>Em análise</dd>
+                    <dt>Confirmações</dt>
+                    <dd>4 pessoas também viram isso</dd>
+                </dl>
+
+                <menu class="action-buttons">
+                    <button class="btn btn-primary" type="button">👍 Também vi isso</button>
+                </menu>
+            </article>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">📍 Reportar</a>
+            <a href="feed.html" class="nav-item active">📋 Ver Bairro</a>
+        </nav>
+    </main>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Reportar</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <h1>Radar Cidadão</h1>
+        </header>
+
+        <section class="view">
+            <aside class="status-card">
+                <p class="status-title">📍 Buscando sua localização...</p>
+                <p class="status-subtitle">Aguardando GPS</p>
+            </aside>
+
+            <menu class="action-buttons">
+                <button id="btn-water" class="btn btn-primary" type="button">💧 Reportar Alagamento</button>
+                <button id="btn-trash" class="btn btn-secondary" type="button">🗑️ Acúmulo de Lixo</button>
+            </menu>
+
+            <form id="report-form" class="report-form">
+                <fieldset>
+                    <legend>Detalhes do alerta</legend>
+
+                    <label for="descricao">Descrição</label>
+                    <textarea id="descricao" name="descricao" rows="3" placeholder="Ex: água parada na esquina, altura da calçada..."></textarea>
+
+                    <label for="gravidade">Gravidade</label>
+                    <select id="gravidade" name="gravidade">
+                        <option value="leve">🟢 Leve</option>
+                        <option value="moderado" selected>🟡 Moderado</option>
+                        <option value="grave">🔴 Grave</option>
+                    </select>
+
+                    <label for="foto">Foto (opcional)</label>
+                    <input type="file" id="foto" name="foto" accept="image/*" capture="environment">
+
+                    <button type="submit" class="btn btn-primary btn-full">Enviar Alerta</button>
+                </fieldset>
+            </form>
+
+            <output id="report-status" for="report-form"></output>
+
+            <article class="user-summary">
+                <h4>Seus reports hoje</h4>
+                <p>Você ainda não enviou nenhum alerta.</p>
+            </article>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item active">📍 Reportar</a>
+            <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
+        </nav>
+
+        <footer>
+            <p class="footer-note">Radar Cidadão &copy; 2026</p>
+        </footer>
+    </main>
+    <script src="./js/geo.js"></script>
+</body>
+</html>
