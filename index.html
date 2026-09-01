@@ -7,25 +7,29 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-
     <main id="app-container">
-        
+
         <header>
             <h1>Radar Cidadão</h1>
         </header>
 
         <section class="view">
-            <!-- Trocamos a div por um <aside> (conteúdo de aviso/lateral) -->
             <aside class="status-card">
                 <p style="margin: 0; color: #d35400; font-size: 14px; font-weight: bold;">📍 Buscando sua localização...</p>
                 <p style="margin: 5px 0 0 0; color: #7f8c8d; font-size: 12px;">Aguardando GPS</p>
             </aside>
-            
-            <!-- Trocamos a div por um <menu> (lista de ações/comandos) -->
+
             <menu class="action-buttons">
                 <button id="btn-water" class="btn btn-primary">💧 Reportar Alagamento</button>
                 <button id="btn-trash" class="btn btn-secondary">🗑️ Acúmulo de Lixo</button>
             </menu>
+
+            <output id="report-status"></output>
+
+            <article class="user-summary">
+                <h4>Seus reports hoje</h4>
+                <p>Você ainda não enviou nenhum alerta.</p>
+            </article>
         </section>
 
         <nav id="bottom-nav">
@@ -33,8 +37,10 @@
             <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
         </nav>
 
+        <footer>
+            <p style="font-size: 11px; color: #95a5a6; text-align: center;">Radar Cidadão &copy; 2026</p>
+        </footer>
     </main>
-
     <script src="./js/geo.js"></script>
 </body>
 </html>
