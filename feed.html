@@ -7,44 +7,58 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-
     <main id="app-container">
-        
+
         <header>
             <h1>Alertas na Região</h1>
         </header>
 
         <section class="view">
-            <!-- Trocamos a div por um header interno da seção -->
             <header class="feed-header">
                 <p style="margin: 0;">Problemas num raio de 2km de você</p>
             </header>
-            
-            <!-- Trocamos a div por uma <ul> (Unordered List) -->
+
             <ul id="alert-list">
-                
-                <!-- Trocamos o card por uma <li> (List Item) -->
+
                 <li class="alert-card">
-                    <!-- Trocamos a div do ícone por um <span> -->
                     <span class="alert-icon">💧</span>
-                    
-                    <!-- Trocamos a div de info por um <article> -->
                     <article class="alert-info">
                         <h4>Via Alagada</h4>
                         <p>A 350m de você</p>
+                        <time datetime="2026-09-01T08:12">Reportado há 12 min</time>
                     </article>
                 </li>
-                
+
+                <li class="alert-card">
+                    <span class="alert-icon">🗑️</span>
+                    <article class="alert-info">
+                        <h4>Acúmulo de Lixo</h4>
+                        <p>A 700m de você</p>
+                        <time datetime="2026-09-01T07:40">Reportado há 44 min</time>
+                    </article>
+                </li>
+
+                <li class="alert-card">
+                    <span class="alert-icon">💧</span>
+                    <article class="alert-info">
+                        <h4>Bueiro Entupido</h4>
+                        <p>A 1.2km de você</p>
+                        <time datetime="2026-09-01T06:55">Reportado há 1h29</time>
+                    </article>
+                </li>
+
             </ul>
+
+            <footer class="feed-summary">
+                <p><strong>3</strong> alertas ativos na sua região</p>
+            </footer>
         </section>
 
         <nav id="bottom-nav">
             <a href="index.html" class="nav-item">📍 Reportar</a>
             <a href="feed.html" class="nav-item active">📋 Ver Bairro</a>
         </nav>
-
     </main>
-
     <script src="./js/storage.js"></script>
 </body>
 </html>
