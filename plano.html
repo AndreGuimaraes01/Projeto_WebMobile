@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Plano Cartesiano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .form-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+
+        .form-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .status {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #004085;
+        }
+
+        .status.manual {
+            background: #fff3cd;
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .status.gps {
+            background: #d4edda;
+            border-color: #4caf50;
+            color: #155724;
+        }
+
+        .canvas-section {
+            margin-top: 30px;
+        }
+
+        .canvas-section h2 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            display: block;
+            max-width: 100%;
+        }
+
+        .legend {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-you {
+            background: #4CAF50;
+            border: 2px solid white;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        .dot-water {
+            background: #00a8e1;
+        }
+
+        .dot-trash {
+            background: #ff9800;
+        }
+
+        .dot-urgent {
+            background: #ff4444;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .legend {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Plano Cartesiano - Radar Cidadão</h1>
+        <p class="info">Visualize sua localização e os alertas em um plano com coordenadas reais</p>
+
+        <!-- Seção de Localização -->
+        <div class="form-section">
+            <h2>📍 Definir Localização</h2>
+
+            <form id="locationForm">
+                <div class="form-row">
+                    <div>
+                        <label for="latitude">Latitude</label>
+                        <input
+                            type="number"
+                            id="latitude"
+                            placeholder="-23.5505"
+                            step="0.0001"
+                            min="-90"
+                            max="90"
+                        >
+                    </div>
+                    <div>
+                        <label for="longitude">Longitude</label>
+                        <input
+                            type="number"
+                            id="longitude"
+                            placeholder="-46.6333"
+                            step="0.0001"
+                            min="-180"
+                            max="180"
+                        >
+                    </div>
+                </div>
+                <button type="submit">📍 Definir Localização</button>
+            </form>
+
+            <!-- Status -->
+            <div id="statusDiv" class="status">
+                <strong>Localização:</strong> Aguardando entrada...
+            </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="canvas-section">
+            <h2>Mapa de Alertas</h2>
+            <canvas id="mapCanvas" width="1000" height="600"></canvas>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot dot-you"></div>
+                    <span>Você</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-water"></div>
+                    <span>Alagamento</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-trash"></div>
+                    <span>Lixo</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot dot-urgent"></div>
+                    <span>Urgente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== DADOS DE ALERTAS ==========
+        const alerts = [
+            { lat: -23.5515, lon: -46.6330, type: 'agua', title: 'Via Alagada', severity: 'urgent' },
+            { lat: -23.5520, lon: -46.6340, type: 'lixo', title: 'Acúmulo de Lixo', severity: 'moderate' },
+            { lat: -23.5500, lon: -46.6310, type: 'agua', title: 'Bueiro Entupido', severity: 'moderate' },
+            { lat: -23.5525, lon: -46.6320, type: 'lixo', title: 'Lixo na Rua', severity: 'low' },
+            { lat: -23.5505, lon: -46.6345, type: 'agua', title: 'Poça de Água', severity: 'low' }
+        ];
+
+        // ========== LOCALIZAÇÃO DO USUÁRIO ==========
+        let userLocation = JSON.parse(localStorage.getItem('userLocation')) || null;
+
+        // ========== ELEMENTS ==========
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        const form = document.getElementById('locationForm');
+        const latInput = document.getElementById('latitude');
+        const lonInput = document.getElementById('longitude');
+        const statusDiv = document.getElementById('statusDiv');
+
+        // ========== SALVAR E ATUALIZAR LOCALIZAÇÃO ==========
+        function setLocation(lat, lon) {
+            userLocation = { latitude: lat, longitude: lon, manual: true };
+            localStorage.setItem('userLocation', JSON.stringify(userLocation));
+            latInput.value = lat.toFixed(4);
+            lonInput.value = lon.toFixed(4);
+            updateStatus();
+            redraw();
+            console.log('✅ Localização salva:', userLocation);
+        }
+
+        // ========== ATUALIZAR STATUS ==========
+        function updateStatus() {
+            if (!userLocation) {
+                statusDiv.textContent = '⏳ Aguardando localização...';
+                statusDiv.className = 'status';
+                return;
+            }
+
+            const lat = userLocation.latitude.toFixed(4);
+            const lon = userLocation.longitude.toFixed(4);
+            const mode = userLocation.manual ? '✏️ Manual' : '📡 GPS';
+
+            statusDiv.innerHTML = `
+                <strong>Localização Atual (${mode}):</strong>
+                ${lat}, ${lon}
+            `;
+            statusDiv.className = userLocation.manual ? 'status manual' : 'status gps';
+        }
+
+        // ========== DESENHAR PLANO CARTESIANO ==========
+        function redraw() {
+            console.log('🎨 Redesenhando plano...');
+
+            // Limpa canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (!userLocation) {
+                ctx.fillStyle = '#999';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Defina uma localização para visualizar o mapa', canvas.width / 2, canvas.height / 2);
+                return;
+            }
+
+            // Define área de visualização (±0.1 graus)
+            const margin = 0.1;
+            const minLat = userLocation.latitude - margin;
+            const maxLat = userLocation.latitude + margin;
+            const minLon = userLocation.longitude - margin;
+            const maxLon = userLocation.longitude + margin;
+
+            const padding = 80;
+            const width = canvas.width - 2 * padding;
+            const height = canvas.height - 2 * padding;
+
+            // ========== FUNÇÃO AUXILIAR: Converter geo para pixel ==========
+            function geoToPixel(lat, lon) {
+                const x = padding + ((lon - minLon) / (maxLon - minLon)) * width;
+                const y = (canvas.height - padding) - ((lat - minLat) / (maxLat - minLat)) * height;
+                return { x, y };
+            }
+
+            // ========== DESENHAR GRID ==========
+            ctx.strokeStyle = '#e8e8e8';
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i <= 5; i++) {
+                const x = padding + (i / 5) * width;
+                ctx.beginPath();
+                ctx.moveTo(x, padding);
+                ctx.lineTo(x, canvas.height - padding);
+                ctx.stroke();
+
+                const y = padding + (i / 5) * height;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(canvas.width - padding, y);
+                ctx.stroke();
+            }
+
+            // ========== DESENHAR EIXOS ==========
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, canvas.height - padding);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(padding, canvas.height - padding);
+            ctx.lineTo(canvas.width - padding, canvas.height - padding);
+            ctx.stroke();
+
+            // ========== LABELS DOS EIXOS ==========
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+
+            // Label X
+            ctx.fillText('Longitude', canvas.width / 2, canvas.height - 15);
+
+            // Label Y
+            ctx.save();
+            ctx.translate(25, canvas.height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('Latitude', 0, 0);
+            ctx.restore();
+
+            // ========== MARCAÇÕES NOS EIXOS ==========
+            ctx.font = '11px Arial';
+            ctx.fillStyle = '#666';
+            ctx.textAlign = 'center';
+
+            for (let i = 0; i <= 5; i++) {
+                const lon = minLon + (i / 5) * (maxLon - minLon);
+                const x = padding + (i / 5) * width;
+                ctx.fillText(lon.toFixed(4), x, canvas.height - padding + 20);
+
+                const lat = minLat + (i / 5) * (maxLat - minLat);
+                const y = (canvas.height - padding) - (i / 5) * height;
+                ctx.textAlign = 'right';
+                ctx.fillText(lat.toFixed(4), padding - 10, y + 4);
+                ctx.textAlign = 'center';
+            }
+
+            // ========== DESENHAR ALERTAS ==========
+            alerts.forEach(alert => {
+                const pos = geoToPixel(alert.lat, alert.lon);
+
+                // Cor baseada no tipo e severidade
+                let color = '#00a8e1';
+                if (alert.type === 'lixo') color = '#ff9800';
+                if (alert.severity === 'urgent') color = '#ff4444';
+
+                // Desenha ponto
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Borda
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            });
+
+            // ========== DESENHAR LOCALIZAÇÃO DO USUÁRIO ==========
+            const userPos = geoToPixel(userLocation.latitude, userLocation.longitude);
+
+            // Halo
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.4)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(userPos.x, userPos.y, 30, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Ponto
+            ctx.fillStyle = '#4CAF50';
+            ctx.beginPath();
+            ctx.arc(userPos.x, userPos.y, 8, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Borda branca
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            console.log('✅ Plano desenhado com sucesso');
+        }
+
+        // ========== FORM SUBMIT ==========
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const lat = parseFloat(latInput.value);
+            const lon = parseFloat(lonInput.value);
+
+            if (isNaN(lat) || isNaN(lon)) {
+                alert('Digite valores válidos');
+                return;
+            }
+
+            setLocation(lat, lon);
+        });
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Inicializando...');
+
+            if (userLocation) {
+                latInput.value = userLocation.latitude.toFixed(4);
+                lonInput.value = userLocation.longitude.toFixed(4);
+                updateStatus();
+                redraw();
+            } else {
+                updateStatus();
+            }
+
+            // Tenta obter GPS
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        console.log('📡 GPS obtido:', pos.coords.latitude, pos.coords.longitude);
+                        setLocation(pos.coords.latitude, pos.coords.longitude);
+                    },
+                    (err) => {
+                        console.log('❌ GPS não disponível:', err.message);
+                    }
+                );
+            }
+        });
+
+        // Redimensiona canvas responsivamente
+        window.addEventListener('resize', () => {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const newWidth = rect.width;
+            if (newWidth > 0) {
+                canvas.width = newWidth;
+                canvas.height = (newWidth / 1000) * 600;
+                redraw();
+            }
+        });
+    </script>
+</body>
+</html>
