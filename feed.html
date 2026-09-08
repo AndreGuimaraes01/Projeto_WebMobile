@@ -28,49 +28,129 @@
             </form>
 
             <ul id="alert-list">
-
-                <li class="alert-card">
-                    <span class="alert-icon">💧</span>
-                    <article class="alert-info">
-                        <h4>Via Alagada <span class="badge badge-urgent">🔴 Urgente</span></h4>
-                        <p>A 350m de você</p>
-                        <time datetime="2026-09-01T08:12">Reportado há 12 min</time>
-                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
-                    </article>
-                </li>
-
-                <li class="alert-card">
-                    <span class="alert-icon">🗑️</span>
-                    <article class="alert-info">
-                        <h4>Acúmulo de Lixo</h4>
-                        <p>A 700m de você</p>
-                        <time datetime="2026-09-01T07:40">Reportado há 44 min</time>
-                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
-                    </article>
-                </li>
-
-                <li class="alert-card">
-                    <span class="alert-icon">💧</span>
-                    <article class="alert-info">
-                        <h4>Bueiro Entupido</h4>
-                        <p>A 1.2km de você</p>
-                        <time datetime="2026-09-01T06:55">Reportado há 1h29</time>
-                        <a href="alerta.html" class="alert-link">Ver detalhes →</a>
-                    </article>
-                </li>
-
+                <!-- Preenchido por JavaScript -->
             </ul>
 
             <footer class="feed-summary">
-                <p><strong>3</strong> alertas ativos na sua região</p>
+                <p><strong id="alertCount">0</strong> alertas ativos na sua região</p>
             </footer>
         </section>
 
         <nav id="bottom-nav">
             <a href="index.html" class="nav-item">📍 Reportar</a>
             <a href="feed.html" class="nav-item active">📋 Ver Bairro</a>
+            <a href="mapa.html" class="nav-item">🗺️ Plano</a>
         </nav>
     </main>
+
     <script src="./js/storage.js"></script>
+    <script src="./js/geo.js"></script>
+
+    <script>
+        /**
+         * Renderiza a lista de alertas dinamicamente
+         */
+        function renderAlerts() {
+            const userLocation = geo.getLocation();
+            if (!userLocation) {
+                console.log('Aguardando localização...');
+                return;
+            }
+
+            const filterType = document.getElementById('filtro-tipo').value;
+            const alertList = document.getElementById('alert-list');
+            const alertCount = document.getElementById('alertCount');
+
+            // Obtém alertas próximos
+            let alerts = alertStorage.getNearbyAlerts(userLocation.latitude, userLocation.longitude, 2);
+
+            // Aplica filtro
+            if (filterType !== 'todos') {
+                alerts = alerts.filter(alert => alert.type === filterType);
+            }
+
+            // Limpa lista anterior
+            alertList.innerHTML = '';
+
+            if (alerts.length === 0) {
+                alertList.innerHTML = `
+                    <li style="text-align: center; padding: 40px 20px; color: #999;">
+                        ✨ Nenhum alerta nesta região no momento
+                    </li>
+                `;
+                alertCount.textContent = '0';
+                return;
+            }
+
+            // Renderiza cada alerta
+            alerts.forEach(alert => {
+                const typeEmoji = alert.type === 'agua' ? '💧' : '🗑️';
+                const timeAgo = getTimeAgo(alert.timestamp);
+
+                const li = document.createElement('li');
+                li.className = 'alert-card';
+                li.innerHTML = `
+                    <span class="alert-icon">${typeEmoji}</span>
+                    <article class="alert-info">
+                        <h4>
+                            ${alert.title}
+                            ${alert.severity === 'urgent' ? '<span class="badge badge-urgent">🔴 Urgente</span>' : ''}
+                            ${alert.severity === 'moderate' ? '<span class="badge badge-warning">🟡 Moderado</span>' : ''}
+                        </h4>
+                        <p>A ${Math.round(alert.distance * 1000)}m de você</p>
+                        <time>${timeAgo}</time>
+                        <a href="alerta.html" class="alert-link" data-alert-id="${alert.id}">Ver detalhes →</a>
+                    </article>
+                `;
+
+                // Ao clicar, armazena o ID do alerta
+                li.querySelector('.alert-link').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    sessionStorage.setItem('selectedAlertId', alert.id);
+                    window.location.href = 'alerta.html';
+                });
+
+                alertList.appendChild(li);
+            });
+
+            alertCount.textContent = alertStorage.getAlerts().filter(a =>
+                geo.calculateDistance(
+                    userLocation.latitude, userLocation.longitude,
+                    a.latitude, a.longitude
+                ) <= 2
+            ).length;
+        }
+
+        /**
+         * Calcula tempo decorrido desde o alerta
+         */
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const alertTime = new Date(timestamp);
+            const diffMs = now - alertTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+
+            if (diffMins < 1) return 'Agora mesmo';
+            if (diffMins < 60) return `Há ${diffMins} min`;
+            if (diffHours < 24) return `Há ${diffHours}h`;
+
+            const diffDays = Math.floor(diffHours / 24);
+            return `Há ${diffDays}d`;
+        }
+
+        // Inicializa
+        document.addEventListener('DOMContentLoaded', () => {
+            // Renderiza inicialmente
+            setTimeout(renderAlerts, 500);
+
+            // Re-renderiza quando filtro muda
+            document.getElementById('filtro-tipo').addEventListener('change', renderAlerts);
+
+            // Re-renderiza quando localização ou alerta muda
+            window.addEventListener('locationUpdated', renderAlerts);
+            window.addEventListener('alertAdded', renderAlerts);
+        });
+    </script>
 </body>
 </html>
