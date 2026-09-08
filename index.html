@@ -14,25 +14,36 @@
         </header>
 
         <section class="view">
-            <aside class="status-card">
-                <p class="status-title">📍 Buscando sua localização...</p>
-                <p class="status-subtitle">Aguardando GPS</p>
+            <!-- STATUS DE LOCALIZAÇÃO -->
+            <aside class="status-card" id="statusCard">
+                <p class="status-title">📍 Aguardando localização...</p>
+                <p class="status-subtitle">Configure em "Plano"</p>
             </aside>
 
+            <!-- BOTÕES DE TIPO DE ALERTA -->
             <menu class="action-buttons">
                 <button id="btn-water" class="btn btn-primary" type="button">💧 Reportar Alagamento</button>
                 <button id="btn-trash" class="btn btn-secondary" type="button">🗑️ Acúmulo de Lixo</button>
             </menu>
 
-            <form id="report-form" class="report-form">
+            <!-- FORMULÁRIO DE REPORT -->
+            <form id="report-form" class="report-form" style="display: none;">
                 <fieldset>
-                    <legend>Detalhes do alerta</legend>
+                    <legend id="form-title">Detalhes do Alerta</legend>
+
+                    <input type="hidden" id="alert-type" value="">
 
                     <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" rows="3" placeholder="Ex: água parada na esquina, altura da calçada..."></textarea>
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        rows="3"
+                        placeholder="Ex: água parada na esquina, altura da calçada..."
+                        required
+                    ></textarea>
 
                     <label for="gravidade">Gravidade</label>
-                    <select id="gravidade" name="gravidade">
+                    <select id="gravidade" name="gravidade" required>
                         <option value="leve">🟢 Leve</option>
                         <option value="moderado" selected>🟡 Moderado</option>
                         <option value="grave">🔴 Grave</option>
@@ -41,27 +52,213 @@
                     <label for="foto">Foto (opcional)</label>
                     <input type="file" id="foto" name="foto" accept="image/*" capture="environment">
 
-                    <button type="submit" class="btn btn-primary btn-full">Enviar Alerta</button>
+                    <div style="display: flex; gap: 12px;">
+                        <button type="submit" class="btn btn-primary btn-full">Enviar Alerta</button>
+                        <button type="button" class="btn btn-secondary" onclick="cancelForm()" style="flex: 1;">Cancelar</button>
+                    </div>
                 </fieldset>
             </form>
 
+            <!-- STATUS DO REPORT -->
             <output id="report-status" for="report-form"></output>
 
+            <!-- RESUMO DE REPORTS DO USUÁRIO -->
             <article class="user-summary">
                 <h4>Seus reports hoje</h4>
-                <p>Você ainda não enviou nenhum alerta.</p>
+                <p id="userReportCount">Você ainda não enviou nenhum alerta.</p>
             </article>
         </section>
 
         <nav id="bottom-nav">
             <a href="index.html" class="nav-item active">📍 Reportar</a>
             <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
+            <a href="mapa.html" class="nav-item">🗺️ Plano</a>
         </nav>
 
         <footer>
             <p class="footer-note">Radar Cidadão &copy; 2026</p>
         </footer>
     </main>
-    <script src="./js/geo.js"></script>
+
+    <!-- SCRIPTS -->
+    <script src="./js/storage.js"></script>
+
+    <script>
+        // ========== LOCALIZAÇÃO DO USUÁRIO ==========
+        let userLocation = null;
+
+        // ========== ELEMENTOS ==========
+        const statusCard = document.getElementById('statusCard');
+        const statusTitle = statusCard.querySelector('.status-title');
+        const statusSubtitle = statusCard.querySelector('.status-subtitle');
+        const btnWater = document.getElementById('btn-water');
+        const btnTrash = document.getElementById('btn-trash');
+        const form = document.getElementById('report-form');
+        const formTitle = document.getElementById('form-title');
+        const alertType = document.getElementById('alert-type');
+        const descricao = document.getElementById('descricao');
+        const gravidade = document.getElementById('gravidade');
+        const foto = document.getElementById('foto');
+        const reportStatus = document.getElementById('report-status');
+        const userReportCount = document.getElementById('userReportCount');
+
+        // ========== ATUALIZAR STATUS DE LOCALIZAÇÃO ==========
+        function updateLocationStatus() {
+            userLocation = JSON.parse(localStorage.getItem('userLocation'));
+
+            if (!userLocation) {
+                statusTitle.textContent = '📍 Sem Localização';
+                statusSubtitle.textContent = 'Configure em "Plano"';
+                statusCard.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
+                return;
+            }
+
+            const lat = userLocation.latitude.toFixed(4);
+            const lon = userLocation.longitude.toFixed(4);
+            const mode = userLocation.manual ? '✏️ Manual' : '📡 GPS';
+
+            statusTitle.textContent = `📍 Localizado ${mode}`;
+            statusSubtitle.textContent = `${lat}, ${lon}`;
+            statusCard.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+
+            console.log('✅ Localização carregada:', userLocation);
+        }
+
+        // ========== CANCELAR FORMULÁRIO ==========
+        function cancelForm() {
+            form.style.display = 'none';
+            form.reset();
+            reportStatus.innerHTML = '';
+        }
+
+        // ========== MOSTRAR FORMULÁRIO PARA ALAGAMENTO ==========
+        btnWater.addEventListener('click', () => {
+            if (!userLocation) {
+                alert('⚠️ Defina sua localização primeiro em "Plano"');
+                return;
+            }
+
+            formTitle.textContent = 'Reportar Alagamento';
+            alertType.value = 'agua';
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+            descricao.focus();
+        });
+
+        // ========== MOSTRAR FORMULÁRIO PARA LIXO ==========
+        btnTrash.addEventListener('click', () => {
+            if (!userLocation) {
+                alert('⚠️ Defina sua localização primeiro em "Plano"');
+                return;
+            }
+
+            formTitle.textContent = 'Reportar Acúmulo de Lixo';
+            alertType.value = 'lixo';
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+            descricao.focus();
+        });
+
+        // ========== SUBMETER FORMULÁRIO ==========
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Valida localização
+            if (!userLocation) {
+                alert('⚠️ Erro: Localização não definida');
+                return;
+            }
+
+            // Valida tipo de alerta
+            const type = alertType.value;
+            if (!type) {
+                alert('⚠️ Erro: Tipo de alerta não definido');
+                return;
+            }
+
+            // Valida descrição
+            const desc = descricao.value.trim();
+            if (!desc) {
+                alert('⚠️ Por favor, descreva o problema');
+                return;
+            }
+
+            // Mapeia severidade
+            const severityMap = {
+                'leve': 'low',
+                'moderado': 'moderate',
+                'grave': 'urgent'
+            };
+
+            const typeTitle = type === 'agua' ? 'Alagamento' : 'Acúmulo de Lixo';
+
+            try {
+                // Cria objeto do alerta
+                const newAlert = {
+                    type: type,
+                    title: typeTitle,
+                    description: desc,
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude,
+                    severity: severityMap[gravidade.value]
+                };
+
+                console.log('📝 Salvando alerta:', newAlert);
+
+                // Adiciona ao storage
+                if (typeof alertStorage === 'undefined') {
+                    throw new Error('Storage não carregado');
+                }
+
+                alertStorage.addAlert(newAlert);
+
+                // Feedback visual
+                reportStatus.innerHTML = `
+                    <div style="background: #d4edda; color: #155724; padding: 16px; border-radius: 8px; margin-top: 16px; border-left: 4px solid #28a745;">
+                        <strong>✅ Alerta enviado com sucesso!</strong><br>
+                        <small>Obrigado por ajudar a comunidade. Redirecionando...</small>
+                    </div>
+                `;
+
+                console.log('✅ Alerta salvo no storage');
+
+                // Limpa formulário
+                form.reset();
+                form.style.display = 'none';
+
+                // Redireciona para sucesso após 2s
+                setTimeout(() => {
+                    window.location.href = 'sucesso.html';
+                }, 2000);
+
+            } catch (err) {
+                console.error('❌ Erro ao salvar alerta:', err);
+                reportStatus.innerHTML = `
+                    <div style="background: #f8d7da; color: #721c24; padding: 16px; border-radius: 8px; margin-top: 16px; border-left: 4px solid #f5c6cb;">
+                        <strong>❌ Erro ao enviar alerta</strong><br>
+                        <small>${err.message}</small>
+                    </div>
+                `;
+            }
+        });
+
+        // ========== INICIALIZAÇÃO ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🚀 Inicializando página de report...');
+
+            updateLocationStatus();
+
+            // Verifica localização a cada 2 segundos
+            setInterval(updateLocationStatus, 2000);
+        });
+
+        // Atualiza quando localização muda em outra aba/página
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'userLocation') {
+                console.log('🔄 Localização atualizada de outra aba');
+                updateLocationStatus();
+            }
+        });
+    </script>
 </body>
 </html>
