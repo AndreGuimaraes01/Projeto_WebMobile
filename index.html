@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Radar Cidadão - Reportar</title>
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <main id="app-container">
@@ -16,7 +16,7 @@
         <section class="view">
             <!-- STATUS DE LOCALIZAÇÃO -->
             <aside class="status-card" id="statusCard">
-                <p class="status-title">📍 Aguardando localização...</p>
+                <p class="status-title"> Aguardando localização...</p>
                 <p class="status-subtitle">Configure em "Plano"</p>
             </aside>
 
@@ -70,9 +70,10 @@
         </section>
 
         <nav id="bottom-nav">
-            <a href="index.html" class="nav-item active">📍 Reportar</a>
-            <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
-            <a href="mapa.html" class="nav-item">🗺️ Plano</a>
+            <a href="index.html" class="nav-item active"> Reportar</a>
+            <a href="feed.html" class="nav-item"> Ver Bairro</a>
+            <a href="mapa.html" class="nav-item"> Plano</a>
+            <a href="como-funciona.html" class="nav-item"> Como Funciona</a>
         </nav>
 
         <footer>
@@ -81,7 +82,8 @@
     </main>
 
     <!-- SCRIPTS -->
-    <script src="./js/storage.js"></script>
+    <script src="./storage.js"></script>
+    <script src="./alerts-counter.js"></script>
 
     <script>
         // ========== LOCALIZAÇÃO DO USUÁRIO ==========
@@ -107,7 +109,7 @@
             userLocation = JSON.parse(localStorage.getItem('userLocation'));
 
             if (!userLocation) {
-                statusTitle.textContent = '📍 Sem Localização';
+                statusTitle.textContent = ' Sem Localização';
                 statusSubtitle.textContent = 'Configure em "Plano"';
                 statusCard.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
                 return;
@@ -115,9 +117,9 @@
 
             const lat = userLocation.latitude.toFixed(4);
             const lon = userLocation.longitude.toFixed(4);
-            const mode = userLocation.manual ? '✏️ Manual' : '📡 GPS';
+            const mode = userLocation.manual ? ' Manual' : ' GPS';
 
-            statusTitle.textContent = `📍 Localizado ${mode}`;
+            statusTitle.textContent = ` Localizado ${mode}`;
             statusSubtitle.textContent = `${lat}, ${lon}`;
             statusCard.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
 
@@ -244,7 +246,7 @@
 
         // ========== INICIALIZAÇÃO ==========
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🚀 Inicializando página de report...');
+            console.log(' Inicializando página de report...');
 
             updateLocationStatus();
 
