@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Plano Cartesiano</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <h1>Plano Cartesiano</h1>
+        </header>
+
+        <section class="view">
+            <h2>Visualização de Alertas</h2>
+            <p class="page-intro">
+                Visualize sua localização (ponto verde) e todos os alertas reportados em um plano com coordenadas reais.
+            </p>
+
+            <!-- Definir localização -->
+            <section class="location-setter">
+                <h3>Definir Localização</h3>
+
+                <form id="locationForm">
+                    <fieldset class="form-row">
+                        <label>Latitude
+                            <input type="number" id="latitude" placeholder="-23.5505" step="any" min="-90" max="90">
+                        </label>
+                        <label>Longitude
+                            <input type="number" id="longitude" placeholder="-46.6333" step="any" min="-180" max="180">
+                        </label>
+                    </fieldset>
+
+                    <menu class="action-buttons">
+                        <button type="submit" class="btn btn-primary">Salvar Localização</button>
+                        <button type="button" id="btnGps" class="btn btn-secondary">Detectar Localização</button>
+                    </menu>
+                </form>
+
+                <output id="locationStatus" class="location-status">Aguardando localização...</output>
+            </section>
+
+            <section class="cartesian-container">
+                <h3>Mapa de Alertas</h3>
+                <p id="alertCount" class="map-info">Carregando alertas...</p>
+
+                <canvas id="mapCanvas"></canvas>
+
+                <ul class="legend">
+                    <li><span class="legend-dot dot-you"></span> Você</li>
+                    <li><span class="legend-dot dot-water"></span> Alagamento</li>
+                    <li><span class="legend-dot dot-trash"></span> Lixo</li>
+                    <li><span class="legend-dot dot-urgent"></span> Urgente</li>
+                </ul>
+            </section>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">Reportar</a>
+            <a href="feed.html" class="nav-item">Ver Bairro</a>
+            <a href="mapa.html" class="nav-item active">Plano</a>
+            <a href="como-funciona.html" class="nav-item">Como Funciona</a>
+        </nav>
+    </main>
+
+    <script src="./storage.js"></script>
+    <script src="./geo.js"></script>
+    <script src="./cartesiano.js"></script>
+    <script src="./mapa.js"></script>
+</body>
+</html>
