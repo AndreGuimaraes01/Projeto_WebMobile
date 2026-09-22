@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Feed da Região</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <h1>Alertas na Região</h1>
+        </header>
+
+        <section class="view">
+            <header class="feed-header">
+                <p class="feed-subtitle">Problemas num raio de 2km de você</p>
+            </header>
+
+            <form class="filter-bar" onsubmit="return false;">
+                <label for="filtro-tipo">Filtrar por tipo</label>
+                <select id="filtro-tipo" name="filtro-tipo">
+                    <option value="todos">Todos</option>
+                    <option value="agua">Alagamento</option>
+                    <option value="lixo">Lixo</option>
+                </select>
+            </form>
+
+            <ul id="alert-list">
+            </ul>
+
+            <footer class="feed-summary">
+                <p><strong id="alertCount">0</strong> alertas ativos na sua região</p>
+            </footer>
+        </section>
+
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">Reportar</a>
+            <a href="feed.html" class="nav-item active">Ver Bairro</a>
+            <a href="mapa.html" class="nav-item">Plano</a>
+            <a href="como-funciona.html" class="nav-item">Como Funciona</a>
+        </nav>
+    </main>
+
+    <script src="./storage.js"></script>
+    <script src="./geo.js"></script>
+    <script src="./feed.js"></script>
+</body>
+</html>
