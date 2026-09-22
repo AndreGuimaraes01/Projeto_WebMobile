@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Radar Cidadão - Como Funciona</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        /* Estilos específicos da página Como Funciona */
+        .info-card {
+            background: var(--bg-light);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            border-left: 4px solid var(--primary);
+        }
+
+        .info-card h3 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            counter-reset: step-counter;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .step-item h4 {
+            font-size: var(--font-size-lg);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .step-item p {
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .faq-section {
+            margin-top: var(--spacing-xl);
+        }
+
+        .faq-item {
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            border: 1px solid var(--border-color);
+        }
+
+        .faq-item details summary {
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            color: var(--text-primary);
+            font-size: var(--font-size-base);
+            padding: 4px 0;
+        }
+
+        .faq-item details p {
+            margin-top: var(--spacing-sm);
+            color: var(--text-secondary);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
+        }
+
+        .badge-card {
+            background: white;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: var(--font-size-sm);
+        }
+
+        .tech-info {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <main id="app-container">
+
+        <header>
+            <h1>📚 Como Funciona</h1>
+        </header>
+
+        <section class="view">
+
+            <!-- SOBRE O PROJETO -->
+            <article class="info-card">
+                <h3>📢 Sobre o Radar Cidadão</h3>
+                <p>
+                    O <strong>Radar Cidadão</strong> é uma plataforma colaborativa desenvolvida para conectar comunidades e permitir o registro de problemas urbanos em tempo real, como <strong>alagamentos</strong> e <strong>acúmulo de lixo</strong>.
+                </p>
+            </article>
+
+            <!-- GUIA PASSO A PASSO -->
+            <h3 style="margin-bottom: 8px;">🚀 Passo a Passo para Usar</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 20px;">
+                Aprenda a reportar ocorrências e acompanhar a situação da sua região:
+            </p>
+
+            <ol class="step-list">
+                <li class="step-item">
+                    <h4>Configure sua Localização</h4>
+                    <p>Acesse a aba <strong>"Plano"</strong> (🗺️) para obter sua posição automaticamente via GPS do navegador ou insira suas coordenadas (latitude e longitude) manualmente.</p>
+                </li>
+                <li class="step-item">
+                    <h4>Reporte um Problema</h4>
+                    <p>Na aba <strong>"Reportar"</strong> (📍), selecione a categoria (💧 Alagamento ou 🗑️ Lixo), insira a descrição do problema, defina a gravidade e adicione uma foto (opcional).</p>
+                </li>
+                <li class="step-item">
+                    <h4>Acompanhe o Bairro</h4>
+                    <p>Navegue pela aba <strong>"Ver Bairro"</strong> (📋) para visualizar a lista de alertas ativos próximos a você (raio de até 2km), podendo filtrar por tipo de ocorrência.</p>
+                </li>
+                <li class="step-item">
+                    <h4>Visualize no Plano Cartesiano</h4>
+                    <p>Consulte no mapa cartesiano da aba <strong>"Plano"</strong> a localização espacial do seu ponto e dos alertas cadastrados na região.</p>
+                </li>
+            </ol>
+
+            <!-- TIPOS E SEVERIDADE -->
+            <div class="info-card" style="border-left-color: var(--warning); margin-top: 24px;">
+                <h3>🚨 Categorias e Gravidade</h3>
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">
+                    Os relatórios recebem sinalizações visuais no feed e no plano conforme o tipo e nível de urgência:
+                </p>
+
+                <div class="badge-grid">
+                    <div class="badge-card">💧 <strong>Alagamento</strong></div>
+                    <div class="badge-card">🗑️ <strong>Acúmulo Lixo</strong></div>
+                    <div class="badge-card"><span class="badge">🟢 Leve</span></div>
+                    <div class="badge-card"><span class="badge badge-warning">🟡 Moderado</span></div>
+                    <div class="badge-card"><span class="badge badge-urgent">🔴 Urgente</span></div>
+                </div>
+            </div>
+
+            <!-- PERGUNTAS FREQUENTES (FAQ) -->
+            <div class="faq-section">
+                <h3 style="margin-bottom: 16px;">❓ Perguntas Frequentes</h3>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>Onde os dados dos alertas ficam armazenados?</summary>
+                        <p>Todos os dados são armazenados localmente no navegador do usuário via <em>localStorage</em>. A aplicação funciona de forma independente, permitindo a consulta offline após o carregamento inicial.</p>
+                    </details>
+                </div>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>Como o aplicativo calcula a distância dos alertas?</summary>
+                        <p>A distância entre sua posição e um alerta reportado é calculada através da fórmula de <strong>Haversine</strong>, que considera a curvatura terrestre a partir das coordenadas geográficas.</p>
+                    </details>
+                </div>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>O que fazer se o GPS não estiver funcionando?</summary>
+                        <p>Você pode informar as coordenadas manualmente na aba <strong>"Plano"</strong> digitando a latitude e longitude da sua localização atual.</p>
+                    </details>
+                </div>
+
+                <div class="faq-item">
+                    <details>
+                        <summary>É preciso criar conta para utilizar?</summary>
+                        <p>Não! O Radar Cidadão é 100% aberto e acessível para facilitar o envio imediato de reportes por qualquer cidadão sem necessidade de cadastro.</p>
+                    </details>
+                </div>
+            </div>
+
+            <!-- INFORMAÇÕES DO PROJETO -->
+            <article class="tech-info">
+                <h4>ℹ️ Informações do Projeto</h4>
+                <p><strong>Projeto:</strong> Radar Cidadão — Versão 2.0</p>
+                <p><strong>Tecnologia:</strong> HTML5, CSS3, JavaScript Vanilla (sem frameworks)</p>
+                <p><strong>Autores:</strong> André Moreira Guimarães & Tomy Boimel</p>
+            </article>
+
+        </section>
+
+        <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+        <nav id="bottom-nav">
+            <a href="index.html" class="nav-item">📍 Reportar</a>
+            <a href="feed.html" class="nav-item">📋 Ver Bairro</a>
+            <a href="mapa.html" class="nav-item">🗺️ Plano</a>
+            <a href="como-funciona.html" class="nav-item active">📚 Como Funciona</a>
+        </nav>
+
+        <footer>
+            <p class="footer-note">Radar Cidadão &copy; 2026</p>
+        </footer>
+    </main>
+
+    <!-- SCRIPTS DE SUPORTE -->
+    <script src="./storage.js"></script>
+    <script src="./geo.js"></script>
+</body>
+</html>
